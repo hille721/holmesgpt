@@ -25,10 +25,9 @@ class JiraSource(SourcePlugin):
             response = requests.get(
                 f"{self.url}/rest/api/2/search",
                 params={"jql": self.jql_query},
-                auth=HTTPBasicAuth(
-                    self.username, self.api_key
-                ),
-                headers={"Accept": "application/json"},
+                headers={"Accept": "application/json",
+                        "Authorization": f"Bearer {self.api_key}"
+                        }
             )
             if response.status_code != 200:
                 raise Exception(
@@ -63,10 +62,9 @@ class JiraSource(SourcePlugin):
         response = requests.post(
             comment_url,
             json=comment_data,
-            auth=HTTPBasicAuth(
-                self.username, self.api_key
-            ),
-            headers={"Accept": "application/json"},
+            headers={"Accept": "application/json",
+                    "Authorization": f"Bearer {self.api_key}"
+                    }
         )
         response.raise_for_status()
         data = response.json()
