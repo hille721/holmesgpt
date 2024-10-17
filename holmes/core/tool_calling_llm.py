@@ -99,8 +99,8 @@ class ToolCallingLLM:
         try:
             return litellm.model_cost[model_name]['max_input_tokens']
         except Exception as e:
-            logging.warning(f"Couldn't find model's name {model_name} in litellm's model list, fallback to 128k tokens for max_input_tokens")
-            return 128000
+            logging.debug(f"Couldn't find model's name {model_name} in litellm's model list, fallback to 128k tokens for max_input_tokens")
+            return 16384
 
     def count_tokens_for_message(self, messages: list[dict]) -> int:
         return litellm.token_counter(model=self.model,
@@ -111,7 +111,7 @@ class ToolCallingLLM:
         try:
             return litellm.model_cost[model_name]['max_output_tokens']
         except Exception as e:
-            logging.warning(f"Couldn't find model's name {model_name} in litellm's model list, fallback to 4096 tokens for max_output_tokens")
+            logging.debug(f"Couldn't find model's name {model_name} in litellm's model list, fallback to 4096 tokens for max_output_tokens")
             return 4096
     
     def call(self, system_prompt, user_prompt, post_process_prompt: Optional[str] = None, response_format: dict = None) -> LLMResult:
